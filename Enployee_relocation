@@ -77,37 +77,3 @@ plt.title('Feature Importance for Employee Relocation Prediction')
 plt.grid(True)
 plt.tight_layout()
 plt.show()
-
-
-
-
-
-------------------
-output
-------------------
-
-Class Distribution:
-0    691
-1    309
-
-Best Parameters: {'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 200}
-
-Improved Model Accuracy: 0.86
-
-Classification Report:
-              precision    recall  f1-score   support
-
-           0       0.91      0.90      0.91       139
-           1       0.76      0.78      0.77        61
-
-    accuracy                           0.86       200
-   macro avg       0.83      0.84      0.84       200
-weighted avg       0.86      0.86      0.86       200
-Feature Importance for Employee Relocation Prediction
--------------------------------------------------------
-| WillingnessToRelocate    | ██████████████████████████
-| JobSatisfaction          | ████████████████████
-| PerformanceRating        | ████████████
-| DepartmentEncoded        | ██████
-| YearsAtCompany           | ████
-| Age                      | ███
