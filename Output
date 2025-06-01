@@ -1,0 +1,21 @@
+Class Distribution:
+ RelocationSuitability
+0    864
+1    136
+Name: count, dtype: int64 
+
+Best Parameters: {'max_depth': None, 'min_samples_split': 2, 'n_estimators': 100}
+
+Improved Model Accuracy: 1.00
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00       173
+           1       1.00      1.00      1.00        27
+
+    accuracy                           1.00       200
+   macro avg       1.00      1.00      1.00       200
+weighted avg       1.00      1.00      1.00       200
+
+
