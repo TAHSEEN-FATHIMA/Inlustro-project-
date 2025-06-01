@@ -1,46 +1,47 @@
 # AI-Driven Employee Relocation Optimization System
 
-## Overview of the project
 
-This project builds a machine learning model to predict whether an employee is suitable for relocation. The model uses a synthetic HR dataset and considers factors like age, department, job satisfaction, and willingness to relocate. A Random Forest Classifier is optimized using Grid Search and evaluated with performance metrics and feature importance analysis.
+## Overview
+
+This project aims to intelligently predict employee suitability for relocation and optimize the assignment of suitable employees to available job locations. Using machine learning and optimization algorithms, the system enhances decision-making in human resource management by automating the relocation process based on key performance and preference indicators.
+
+---
 
 ## Objective
 
-To develop a predictive system that helps organizations identify employees most suitable for relocation based on a combination of personal and performance-related factors. This assists HR departments in making informed, data-driven decisions for internal transfers, remote postings, and other workforce mobility needs.
+The primary goal is to build a predictive and optimization framework that:
 
-## Key Activities
+* Identifies employees who are likely suitable for relocation.
+* Optimally assigns them to available locations considering performance, satisfaction, and location priority.
+* Improves workforce allocation while minimizing employee dissatisfaction and operational cost.
 
-✅ Data Generation: Created a synthetic HR dataset of 1000 employees with realistic attributes like age, department, years at company, job satisfaction, etc.
+---
 
-✅ Label Creation: Defined RelocationSuitability based on business logic combining willingness to relocate, job satisfaction, and performance rating.
+## Key Features
 
-✅ Data Preprocessing: Encoded categorical variables using LabelEncoder.
+* **Synthetic Employee Dataset Generation**: Creates realistic employee data including attributes like age, department, years at company, performance rating, job satisfaction, and willingness to relocate.
+* **Relocation Suitability Prediction**: Trains a machine learning model to predict whether an employee is suitable for relocation.
+* **Label Encoding**: Encodes categorical department data for model training.
+* **Relocation Location Simulation**: Generates hypothetical job locations with priority levels.
+* **Optimization Engine**: Implements the Hungarian Algorithm to match suitable employees with optimal job locations based on a custom cost function.
+* **Reporting**: Displays a classification report and final relocation assignments.
 
-✅ Model Training: Used RandomForestClassifier for prediction.
-
-✅ Hyperparameter Tuning: Optimized model using GridSearchCV with cross-validation.
-
-✅ Evaluation: Evaluated model using accuracy and classification report.
-
-✅ Feature Importance: Visualized the most influential features driving the prediction.
+---
 
 ## Technologies Used
 
-Programming Language - Python 3.x
+* Python
+* pandas
+* numpy
+* scikit-learn
+* scipy
+* Jupyter Notebook / Python Script
 
-Data Manipulation	- pandas, numpy
-
-Visualization -	matplotlib
-
-Machine Learning - scikit-learn (RandomForest, GridSearchCV, LabelEncoder)
+---
 
 ## Use Cases
 
-### Internal Transfers: 
-  Recommend employees for cross-department or cross-location transfers.
-### Global Relocation: 
-  Identify candidates for international postings or remote roles.
-### HR Decision Support: 
-  Provide insights into workforce mobility using predictive analytics.
-### Talent Management: 
-  Help retain talent by offering opportunities based on job satisfaction and performance.
+* **Human Resource Management**: Automated assistance for HR departments in making relocation decisions.
+* **Workforce Planning**: Efficient employee-to-location matching for project-based or expanding businesses.
+* **Employee Retention**: Relocating unsatisfied but high-performing employees to new opportunities.
+* **Decision Support**: Provides data-driven insights to management for internal mobility and resource optimization.
