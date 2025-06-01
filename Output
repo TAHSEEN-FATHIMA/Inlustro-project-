@@ -1,21 +1,25 @@
-Class Distribution:
- RelocationSuitability
-0    864
-1    136
-Name: count, dtype: int64 
-
-Best Parameters: {'max_depth': None, 'min_samples_split': 2, 'n_estimators': 100}
-
-Improved Model Accuracy: 1.00
-
 Classification Report:
-              precision    recall  f1-score   support
+               precision    recall  f1-score   support
 
-           0       1.00      1.00      1.00       173
-           1       1.00      1.00      1.00        27
+           0       0.94      1.00      0.97        17
+           1       1.00      0.67      0.80         3
 
-    accuracy                           1.00       200
-   macro avg       1.00      1.00      1.00       200
-weighted avg       1.00      1.00      1.00       200
+    accuracy                           0.95        20
+   macro avg       0.97      0.83      0.89        20
+weighted avg       0.95      0.95      0.95        20
 
 
+Optimal Employee Relocation Plan:
+
+Employee 14 ➡ City_11 (Priority: 1)
+Employee 15 ➡ City_12 (Priority: 1)
+Employee 22 ➡ City_3 (Priority: 2)
+Employee 26 ➡ City_8 (Priority: 2)
+Employee 30 ➡ City_7 (Priority: 3)
+Employee 34 ➡ City_1 (Priority: 3)
+Employee 36 ➡ City_4 (Priority: 3)
+Employee 44 ➡ City_9 (Priority: 3)
+Employee 68 ➡ City_6 (Priority: 4)
+Employee 71 ➡ City_2 (Priority: 4)
+Employee 85 ➡ City_5 (Priority: 4)
+Employee 86 ➡ City_10 (Priority: 4)
