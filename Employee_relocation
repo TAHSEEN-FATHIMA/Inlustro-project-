@@ -1,12 +1,14 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 from scipy.optimize import linear_sum_assignment
-from sklearn.metrics import classification_report
 
-# Step 1: Generate synthetic employee data
+# Step 1: Generate Synthetic Employee Data
 np.random.seed(42)
 num_employees = 100
 data = pd.DataFrame({
@@ -19,7 +21,7 @@ data = pd.DataFrame({
     'WillingnessToRelocate': np.random.choice([0, 1], size=num_employees)
 })
 
-# Step 2: Create target label: RelocationSuitability
+# Step 2: Define Ground Truth for Relocation Suitability
 conditions = (
     (data['WillingnessToRelocate'] == 1) &
     (data['JobSatisfaction'] <= 2) &
@@ -27,38 +29,55 @@ conditions = (
 )
 data['RelocationSuitability'] = np.where(conditions, 1, 0)
 
-# Step 3: Encode department
-le = LabelEncoder()
-data['DepartmentEncoded'] = le.fit_transform(data['Department'])
+# Plot Class Distribution 
+plt.figure(figsize=(5, 4))
+sns.countplot(x='RelocationSuitability', hue='RelocationSuitability', data=data, palette='pastel', legend=False)
+plt.title('Relocation Suitability Distribution')
+plt.xlabel('Suitability (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.tight_layout()
+plt.show()
 
-# Step 4: Train classifier to predict suitability
+# Step 3: Encode Categorical Features
+data['DepartmentEncoded'] = LabelEncoder().fit_transform(data['Department'])
+
+# Step 4: Train a Random Forest Classifier
 features = ['Age', 'YearsAtCompany', 'PerformanceRating', 'JobSatisfaction', 'WillingnessToRelocate', 'DepartmentEncoded']
 target = 'RelocationSuitability'
 
 X = data[features]
 y = data[target]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(X_train, y_train)
+X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=42)
 
-# Evaluate model
-y_pred = clf.predict(X_test)
-print("Classification Report:\n", classification_report(y_test, y_pred))
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
 
-# Step 5: Predict suitability for all employees
-data['PredictedSuitability'] = clf.predict(X)
+# Step 5: Feature Importance Plot
+plt.figure(figsize=(8, 5))
+importances = model.feature_importances_
+sns.barplot(x=importances, y=features, palette='Blues_d')
+plt.title('Feature Importance in Predicting Relocation Suitability')
+plt.xlabel('Importance Score')
+plt.tight_layout()
+plt.show()
 
-# Step 6: Simulate available job locations
+# Step 6: Evaluate Classifier
+y_pred = model.predict(X_test)
+print(" Classification Report:\n", classification_report(y_test, y_pred))
+
+# Step 7: Predict on Full Dataset
+data['PredictedSuitability'] = model.predict(X)
+
+# Step 8: Simulate Available Job Locations
 num_locations = 20
 locations = pd.DataFrame({
     'LocationID': range(1, num_locations + 1),
     'LocationName': [f"City_{i}" for i in range(1, num_locations + 1)],
-    'Priority': np.random.randint(1, 5, size=num_locations)  # lower is better
+    'Priority': np.random.randint(1, 5, size=num_locations)  # Lower = higher priority
 })
 
-# Step 7: Optimization using cost matrix (simple heuristic)
-# Create a cost matrix where lower values are preferred
+# Step 9: Build Cost Matrix for Optimization
 suitable_employees = data[data['PredictedSuitability'] == 1].reset_index(drop=True)
 num_matches = min(len(suitable_employees), len(locations))
 cost_matrix = np.zeros((num_matches, num_matches))
@@ -67,20 +86,28 @@ for i in range(num_matches):
     for j in range(num_matches):
         emp = suitable_employees.iloc[i]
         loc = locations.iloc[j]
-        # Cost function: high performance and low job satisfaction are better
         cost = (
-            -emp['PerformanceRating'] * 2 +  # want high performance
-            emp['JobSatisfaction'] * 1.5 +  # want lower satisfaction
-            loc['Priority']                 # location priority (lower is better)
+            -emp['PerformanceRating'] * 2 +  # prefer higher performers
+            emp['JobSatisfaction'] * 1.5 +   # prefer less satisfied
+            loc['Priority']                 # prefer high priority locations
         )
         cost_matrix[i][j] = cost
 
-# Step 8: Solve assignment using Hungarian Algorithm
+# Step 10: Visualize Cost Matrix
+plt.figure(figsize=(8, 6))
+sns.heatmap(cost_matrix, cmap="YlGnBu", annot=False, cbar_kws={'label': 'Cost'})
+plt.title("Cost Matrix: Employees vs Locations")
+plt.xlabel("Locations")
+plt.ylabel("Employees")
+plt.tight_layout()
+plt.show()
+
+# Step 11: Optimal Assignment Using Hungarian Algorithm
 row_ind, col_ind = linear_sum_assignment(cost_matrix)
 
-# Step 9: Print optimal assignments
-print("\n Optimal Relocation Plan:")
+# Step 12: Print the Optimal Relocation Plan
+print("\n Optimal Employee Relocation Plan:\n")
 for emp_idx, loc_idx in zip(row_ind, col_ind):
     emp = suitable_employees.iloc[emp_idx]
     loc = locations.iloc[loc_idx]
-    print(f"Employee {emp['EmployeeID']} ➡️ {loc['LocationName']} (Priority: {loc['Priority']})")
+    print(f"Employee {int(emp['EmployeeID'])} ➡{loc['LocationName']} (Priority: {loc['Priority']})")
